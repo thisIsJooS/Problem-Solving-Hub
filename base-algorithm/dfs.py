@@ -22,3 +22,5 @@ graph = [
 visited = [False] * 9
 
 dfs(graph, 1, visited)
+
+# Result : 1 2 7 6 8 3 4 5
