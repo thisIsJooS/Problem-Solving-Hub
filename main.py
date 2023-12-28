@@ -1,37 +1,16 @@
-import heapq
-INF = int(1e9)
+data = ['7 8', '1 2', '1 5', '2 3', '2 6', '3 4', '4 7', '5 6', '6 4']
 
-n, m = map(int, input().split())
-start = int(input())
-graph = [[] for i in range(n+1)]
-distance = [INF] * (n+1)
+n, m = data[0].split()
+print(n)
+print(m)
 
-for _ in range(m):
-    a, b, c = map(int, input().split())
-    graph[a].append((b, c))
+for e in data[1:]:
+    a, b= e.split()
+    print(f'a : {a}, b : {b}')
 
 
-def dijkstra(start):
-    q = []
-    heapq.heappush(q, (0, start))
-    distance[start] = 0
-
-    while q:
-        dist, now = heapq.heappop(q)
-        if distance[now] < dist:
-            continue
-
-        for n, d in graph[now]:
-            cost = dist + d
-            if cost < distance[n]:
-                distance[n] = cost
-                heapq.heappush(q, (cost, n))
-
-dijkstra(start)
-
-for i in range(1, n+1):
-    # 도달할 수 없는 경우, 무한(INF)라고 출력
-    if distance[i] == INF:
-        print("INF")
-    else:
-        print(distance[i], end=' ')
+# arr = []
+# for _ in range(9):
+#     arr.append(input())
+#
+# print(arr)
