@@ -41,7 +41,7 @@ def merge():
 
 def merge_sort(arr):
 
-    return arr
+    return
 
 
 arr_for_sort = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
