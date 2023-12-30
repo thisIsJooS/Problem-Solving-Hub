@@ -64,8 +64,8 @@ def binary_search_iteration(arr, target, start, end):
 
 
 arr_for_search = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]
-print('binary search (recursive) >> ', binary_search_recursive(copy.copy(arr_for_search), 9, 0, len(arr_for_search)-1))
-print('binary search (recursive) >> ', binary_search_recursive(copy.copy(arr_for_search), 9, 0, len(arr_for_search)-1))
+print('(:4)  binary search (recursive) >> ', binary_search_recursive(copy.copy(arr_for_search), 9, 0, len(arr_for_search)-1))
+print('(:4)  binary search (iteration) >> ', binary_search_iteration(copy.copy(arr_for_search), 9, 0, len(arr_for_search)-1))
 print('=================================================')
 
 
