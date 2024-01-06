@@ -1,14 +1,9 @@
-mat = [list(input()) for _ in range(8)]
+n, m = map(int, input().split())
 
-res = 0
-for i in range(0, 8, 2):
-    for j in range(0, 8, 2):
-        if mat[i][j] == 'F':
-            res += 1
+arr = [0]*(n+1)
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    for i in range(a, b+1):
+        arr[i] = c
 
-for i in range(1, 8, 2):
-    for j in range(1, 8, 2):
-        if mat[i][j] == 'F':
-            res += 1
-
-print(res)
+print(*arr[1:])
