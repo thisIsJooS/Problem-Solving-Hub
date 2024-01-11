@@ -1,24 +1,15 @@
-import sys
-input = sys.stdin.readline
+def is_prime(num):
+    if num < 2:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
 
-arr = []
-for _ in range(int(input())):
-    line = input().rstrip()
+current_number = 71529782
 
-    sline = line.split()
-    if len(sline) > 1:
-        a, b = sline
-        arr.append(b)
-
-    else:
-        c = sline[0]
-        c = int(c)
-
-        if c== 2:
-            print(arr.pop() if arr else -1)
-        elif c ==3:
-            print(len(arr))
-        elif c==4:
-            print(0 if arr else 1)
-        else:
-            print(arr[-1] if arr else -1)
+while True:
+    if is_prime(current_number):
+        print("첫 번째로 나타나는 소수:", current_number)
+        break
+    current_number += 1
