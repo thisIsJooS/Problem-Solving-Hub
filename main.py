@@ -1,27 +1,26 @@
-n = int(input())
+import math
 
-prev = None
-gap = int(1e9)
-gaps = []
-arr = []
-for i in range(n):
-    d = int(input())
-    arr.append(d)
+def is_prime(n):
+    if n == 2:
+        return True
 
-    if prev is not None:
-        gap = d - prev
-        gaps.append(gap)
+    if n % 2 == 0 or n <= 1:
+        return False
 
-    prev = d
+    for i in range(3, int(math.sqrt(n))+1, 2):
+        if n % i == 0:
+            return False
 
-
-from math import gcd
-
-prev_gap = gaps[0]
-gc = 0
-for g in gaps[1:]:
-    gc = gcd(prev_gap, g)
-    prev_gap = gc
+    return True
 
 
-print((arr[-1] - arr[0]) // gc + 1 - n)
+
+
+for _ in range(int(input())):
+    n = int(input())
+    i = n
+    while True:
+        if is_prime(i):
+            print(i)
+            break
+        i += 1
