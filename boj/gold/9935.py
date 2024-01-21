@@ -1,28 +1,26 @@
 from collections import deque
 
-string = list(input())
+string, s = list(input()), list(input())
 length = len(string)
-s = list(input())
-lens = len(s)
 
+arr = deque()
 
-def is_same(arr, s):
-    for i in range(lens):
-        try:
-            if arr[i] != s[i]:
-                return False
-        except:
+def is_including(arr, s):
+    if len(arr) < len(s):
+        return False
+
+    for i in range(len(s)):
+        if arr[i] != s[i]:
             return False
 
     return True
 
 
-arr = deque()
 for i in range(length-1, -1, -1):
     arr.appendleft(string.pop())
 
-    if is_same(arr, s):
-        for _ in range(lens):
+    if is_including(arr, s):
+        for _ in range(len(s)):
             arr.popleft()
 
 
