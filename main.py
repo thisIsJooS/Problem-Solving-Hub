@@ -1,34 +1,4 @@
-import sys
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
-
-n, m, r = map(int, input().split())
-graph = [[] for _ in range(n+1)]
-visited = [0] * (n+1)
-for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a].append(b)
-    graph[b].append(a)
-
-for g in graph:
-    g.sort()
-
-
-order = 2
-from collections import deque
-
-q = deque()
-q.append(r)
-visited[r] = 1
-
-while q:
-    now = q.popleft()
-
-    for u in graph[now]:
-        if not visited[u]:
-            visited[u] = order
-            order += 1
-            q.append(u)
-
-for i in range(1, n+1):
-    print(visited[i])
+a = list(range(1, 10))
+b = list(range(1, 10, 2))
+print(a, b)
+print(a-b)
