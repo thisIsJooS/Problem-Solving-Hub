@@ -7,8 +7,6 @@ for i in range(n):
         if graph[i][j] == 0:
             graph[i][j] = 1e6
 
-for i in range(n):
-    graph[i][i] = 0
 
 for k in range(n):
     for i in range(n):
