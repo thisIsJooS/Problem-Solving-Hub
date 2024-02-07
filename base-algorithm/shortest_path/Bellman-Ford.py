@@ -39,7 +39,7 @@ def bf(start):
 
     return False
 
-# n 까지의 최적 경로를 알고 싶다면,  boj/2gold/1738.py 참고
+# n 까지의 최적 경로를 알고 싶다면,  boj/2gold/1738-벨만포드최단경로역추적.py 참고
 
 
 # Bellman-Ford 알고리즘 수행

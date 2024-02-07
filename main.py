@@ -1,9 +1,13 @@
-n = int(input())
+for _ in range(3):
+    n = int(input())
+    arr = []
+    for _ in range(n):
+        arr.append(int(input()))
 
-arr = list(map(int, input().split()))
-
-arr.sort()
-first = arr[0]
-last = arr[-1]
-
-print(last*2 - first*2)
+    agg = sum(arr)
+    if agg > 0:
+        print('+')
+    elif agg < 0:
+        print('-')
+    else:
+        print('0')
