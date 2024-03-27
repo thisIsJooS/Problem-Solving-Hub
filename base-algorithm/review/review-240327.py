@@ -23,6 +23,7 @@ from collections import deque
 # Sort
 def selection_sort(arr):
     n = len(arr)
+
     for i in range(n):
         min_index = i
         for j in range(i+1, n):
@@ -30,12 +31,12 @@ def selection_sort(arr):
                 min_index = j
         arr[i], arr[min_index] = arr[min_index], arr[i]
 
-
     return arr
 
 
 def insertion_sort(arr):
     n = len(arr)
+
     for i in range(1, n):
         for j in range(i, 0, -1):
             if arr[j-1] >= arr[j]:
@@ -64,7 +65,7 @@ def quick_sort(arr):
                 arr[right], arr[left] = arr[left], arr[right]
 
         f(start, right-1)
-        f(right+1, start)
+        f(right+1, end)
 
     f(0, len(arr)-1)
 
@@ -82,6 +83,7 @@ def merge(left, right):
             else:
                 res.append(right[0])
                 right = right[1:]
+
         elif left:
             res.append(left[0])
             left = left[1:]
@@ -91,7 +93,6 @@ def merge(left, right):
 
     return res
 
-
 def merge_sort(arr):
     if len(arr) <= 1:
         return arr
@@ -99,7 +100,6 @@ def merge_sort(arr):
     mid = len(arr) // 2
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
-
 
     return merge(left, right)
 
@@ -125,7 +125,6 @@ def binary_search_recursive(arr, target, start, end):
     else:
         return binary_search_recursive(arr, target, start, mid-1)
 
-
     return
 
 
@@ -135,11 +134,10 @@ def binary_search_iteration(arr, target, start, end):
         mid = (start + end) // 2
         if target == arr[mid]:
             return mid
-        elif target < arr[mid]:
+        elif arr[mid] < target:
+            start = mid +1
+        else:
             end = mid - 1
-        else :
-            start  = mid + 1
-
 
     return
 
@@ -153,7 +151,6 @@ print('=================================================')
 # Shortest Path Algorithm
 def _dijkstra():     # start 점은 1로 가정
     data = ['4 7 ', '1 2 4', '1 4 6 ', '2 1 3', '2 3 7', '3 1 5', '3 4 4', '4 3 2']     # (v, e), (a, b, cost)
-    start = 1
     v, e = map(int, data[0].split())
     mat = [[] for _ in range(v+1)]
 
@@ -161,6 +158,7 @@ def _dijkstra():     # start 점은 1로 가정
         a, b, cost = map(int, d.split())
         mat[a].append((b, cost))
 
+    start = 1
     distance = [1e9] * (v+1)
     distance[start] = 0
     q = []
@@ -178,14 +176,14 @@ def _dijkstra():     # start 점은 1로 가정
                 distance[v] = cost
                 heapq.heappush(q, (cost, v))
 
-
     return distance[1:]
 
 
 def _floyd_warshall():
     data = ['4 7 ', '1 2 4', '1 4 6 ', '2 1 3', '2 3 7', '3 1 5', '3 4 4', '4 3 2']     # (v, e), (a, b, cost)
+
     v, e = map(int, data[0].split())
-    mat = [[100]*(v+1) for _ in range(v + 1)]
+    mat = [[100] * (v+1) for _ in range(v+1)]
     for d in data[1:]:
         a, b, cost = map(int, d.split())
         mat[a][b] = cost
@@ -193,12 +191,10 @@ def _floyd_warshall():
     for i in range(v+1):
         mat[i][i] = 0
 
-
     for k in range(1, v+1):
         for i in range(1, v+1):
             for j in range(1, v+1):
                 mat[i][j] = min(mat[i][j], mat[i][k] + mat[k][j])
-
 
     return mat[1:]
 
@@ -245,7 +241,6 @@ def prim():
             if v not in visited:
                 heapq.heappush(q, (c, v))
 
-
     return res
 
 
@@ -264,22 +259,25 @@ def kruskal():
             parent[b] = a
         else:
             parent[a] = b
+
     data = ['7 9', '1 2 29', '1 5 75', '2 3 35', '2 6 34', '3 4 7', '4 6 23', '4 7 13', '5 6 53', '6 7 25']     # (v, e), (a, b, cost)
 
     start = 1
     v, e = map(int, data[0].split())
-    mat = [[] for _ in range(v + 1)]
-    parent = [i for i in range(v + 1)]
+    mat = [[] for _ in range(v+1)]
+    parent = [i for i in range(v+1)]
     edges = []
     for d in data[1:]:
         a, b, cost = map(int, d.split())
         edges.append((cost, a, b))
+
     edges.sort()
+
     res = 0
     for e in edges:
         c, a, b = e
         if find_parent(a) != find_parent(b):
-            union(a ,b)
+            union(a, b)
             res += c
 
     return res
@@ -295,15 +293,16 @@ def topology_sort():
     data = ['7 8', '1 2', '1 5', '2 3', '2 6', '3 4', '4 7', '5 6', '6 4']      # 1. (v, e) / 2~. (a, b) : a -> b / 진입차수는 모두 1로 가정
 
     v, e = map(int, data[0].split())
-    mat = [[] for _ in range(v + 1)]
+    mat = [[] for _ in range(v+1)]
     indeg = [0] * (v+1)
 
     for d in data[1:]:
-        a, b= map(int, d.split())
+        a, b = map(int, d.split())
         mat[a].append(b)
         indeg[b] += 1
 
     q = deque()
+
     for i in range(1, v+1):
         if indeg[i] == 0:
             q.append(i)
@@ -318,7 +317,6 @@ def topology_sort():
             indeg[v] -= 1
             if indeg[v] == 0:
                 q.append(v)
-
 
     return res
 
