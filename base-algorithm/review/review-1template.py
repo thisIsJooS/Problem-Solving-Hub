@@ -1,4 +1,6 @@
 """
+3. quick sort
+4. merge sort
 5. binary search - recursive
 6. binary search - iteration
 7. Dijkstra shortest-path algorithm
@@ -17,16 +19,6 @@ from collections import deque
 
 
 # Sort
-def selection_sort(arr):
-
-    return arr
-
-
-def insertion_sort(arr):
-
-    return arr
-
-
 def quick_sort(arr):
 
     return arr
@@ -42,8 +34,6 @@ def merge_sort(arr):
 
 
 arr_for_sort = [7, 5, 9, 0, 3, 1, 6, 2, 4, 8]
-print('selection_sort >> ', selection_sort(copy.copy(arr_for_sort)))
-print('insertion_sort >> ', insertion_sort(copy.copy(arr_for_sort)))
 print('    quick_sort >> ', quick_sort(copy.copy(arr_for_sort)))
 print('    merge_sort >> ', merge_sort(copy.copy(arr_for_sort)))
 print('=================================================')
