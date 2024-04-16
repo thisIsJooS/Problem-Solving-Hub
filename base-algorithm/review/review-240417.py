@@ -17,16 +17,14 @@ import copy
 import heapq
 from collections import deque
 
-INF = 1e9
 
 # Sort
 def quick_sort(arr):
-
     def f(arr, start, end):
         if start >= end:
             return
 
-        pivot, left, right = start, start+1, end
+        pivot, left, right = start, start + 1, end
 
         while left <= right:
             while left <= end and arr[pivot] >= arr[left]:
@@ -39,8 +37,10 @@ def quick_sort(arr):
             else:
                 arr[left], arr[right] = arr[right], arr[left]
 
+
         f(arr, start, right-1)
         f(arr, right+1, end)
+
 
     f(arr, 0, len(arr)-1)
     return arr
@@ -68,11 +68,10 @@ def merge(left, right):
 
 
 def merge_sort(arr):
-    if len(arr) <= 1:
+    if len(arr) == 1:
         return arr
 
-    mid = len(arr)//2
-
+    mid = len(arr) // 2
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
 
@@ -91,24 +90,28 @@ def binary_search_recursive(arr, target, start, end):
         return
 
     mid = (start + end) // 2
-    if arr[mid] == target:
+
+    if target == arr[mid]:
         return mid
-    elif arr[mid] > target:
-        return binary_search_recursive(arr, target, start, mid-1)
-    else:
+    elif target > arr[mid]:
         return binary_search_recursive(arr, target, mid+1, end)
+    else:
+        return binary_search_recursive(arr, target, start, mid-1)
+
 
 
 def binary_search_iteration(arr, target, start, end):
     while start <= end:
         mid = (start + end) // 2
 
-        if arr[mid] == target:
+        if target == arr[mid]:
             return mid
-        elif arr[mid] > target:
-            end = mid - 1
-        else:
+        elif target > arr[mid]:
             start = mid + 1
+        else:
+            end = mid - 1
+
+    return
 
 
 arr_for_search = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]
@@ -121,59 +124,60 @@ print('=================================================')
 def _dijkstra():     # start 점은 1로 가정
     data = ['4 7 ', '1 2 4', '1 4 6 ', '2 1 3', '2 3 7', '3 1 5', '3 4 4', '4 3 2']     # (v, e), (a, b, cost)
 
-    start = 1
     v, e = map(int, data[0].split())
     graph = [[] for _ in range(v+1)]
     for d in data[1:]:
         a, b, c = map(int, d.split())
         graph[a].append((b, c))
 
-    distance = [INF] * (v+1)
+    distance = [1e9] * (v+1)
+    start = 1
     distance[start] = 0
     q = []
     heapq.heappush(q, (0, start))
 
     while q:
         dist, now = heapq.heappop(q)
+
         if distance[now] < dist:
             continue
 
         for b, c in graph[now]:
-            cost = dist + c
-            if cost < distance[b]:
+            cost = c + dist
+            if distance[b] > cost:
                 distance[b] = cost
                 heapq.heappush(q, (cost, b))
+
 
     return distance[1:]
 
 
 def _floyd_warshall():
     data = ['4 7 ', '1 2 4', '1 4 6 ', '2 1 3', '2 3 7', '3 1 5', '3 4 4', '4 3 2']     # (v, e), (a, b, cost)
-    v, e = map(int, data[0].split())
-    graph = [[INF] * (v+1) for _ in range(v+1)]
 
+    v, e = map(int, data[0].split())
+    graph = [[1e9] * (v+1) for _ in range(v+1)]
     for i in range(v+1):
         graph[i][i] = 0
 
     for d in data[1:]:
-        a, b, cost = map(int, d.split())
-        graph[a][b] = cost
+        a, b, c = map(int, d.split())
+        graph[a][b] = c
 
-    for k in range(1, v+1):
-        for i in range(1, v + 1):
-            for j in range(1, v + 1):
+    for k in range(v+1):
+        for i in range(v+1):
+            for j in range(v+1):
                 graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j])
 
     return graph[1:]
 
 
-def _bellman_ford():
-    data = ['3 4', '1 2 4', '1 3 3', '2 3 -1', '3 1 -2']  # (v, e), (a, b, cost)
+def _bellman_ford(data):
+    # data = ['3 4', '1 2 4 ', '1 3 3 ', '2 3 -1 ', '3 1 -2 ']  # (v, e), (a, b, cost)
 
     v, e = map(int, data[0].split())
+    distance = [1e9] * (v+1)
     edges = []
-    distance = [INF] * (v+1)
-
     for d in data[1:]:
         a, b, c = map(int, d.split())
         edges.append((a, b, c))
@@ -181,24 +185,28 @@ def _bellman_ford():
     def bf(start):
         distance[start] = 0
 
-        for i in range(v):      # 전체 v 번의 라운드 반복
-            for e in edges:      # 매번 "모든 간선" 확인
+        for i in range(v):
+            for e in edges:
                 now, b, c = e
                 cost = distance[now] + c
 
-                if distance[now] != INF and cost < distance[b]:
+                if distance[now] != 1e9 and cost < distance[b]:
                     distance[b] = cost
 
-                    if i == v-1:        # v 번째 라운드에서도 값이 갱신된다면 음수 순환 존재
+                    if i==v-1:
                         return True
+
 
         return False
 
     cycle = bf(1)
     res = ''
-    if not cycle:
-        for i in range(2, v+1):
-            if distance[i] == INF:
+
+    if cycle:
+        return -1
+    else:
+        for i in range(2, v + 1):
+            if distance[i] == 1e9:
                 res += '-1'
             else:
                 res += str(distance[i])
@@ -208,7 +216,8 @@ def _bellman_ford():
 
 print('(:0486)   Dijkstra Shortest Path Algorithm >> ', _dijkstra())
 print('    Floyd-Warshall Shortest Path Algorithm >> ', _floyd_warshall())
-print('(:43) Bellman_Ford Shortest Path Algorithm >> ', _bellman_ford())
+print('(:43) Bellman_Ford Shortest Path Algorithm >> ', _bellman_ford(['3 4', '1 2 4 ', '1 3 3 ', '2 3 -1 ', '3 1 -2 ']))
+print('(:-1) Bellman_Ford Shortest Path Algorithm >> ', _bellman_ford(['3 4', '1 2 4 ', '1 3 3 ', '2 3 -4 ', '3 1 -2 ']))
 print('=================================================')
 """ Floyd-Warshall Answer
 >>  0 4 8 6 
@@ -221,50 +230,54 @@ print('=================================================')
 # MST
 def prim():
     data = ['7 9', '1 2 29', '1 5 75', '2 3 35', '2 6 34', '3 4 7', '4 6 23', '4 7 13', '5 6 53', '6 7 25']     # (v, e), (a, b, cost)
-    v, e = map(int, data[0].split())
-    start = 1
-    graph = [[] for _ in range(v+1)]
 
+    v, e = map(int, data[0].split())
+    graph = [[] for _ in range(v+1)]
     for d in data[1:]:
         a, b, c = map(int, d.split())
         graph[a].append((b, c))
         graph[b].append((a, c))
 
     q = []
-    heapq.heappush(q, (0, start))
-    visited = set()
+    heapq.heappush(q, (0, 1))
     res = 0
+    visited = set()
 
     while q:
-        dist, now = heapq.heappop(q)
+        cost, now = heapq.heappop(q)
 
         if now in visited:
             continue
 
         visited.add(now)
-        res += dist
+        res += cost
 
-        for v, c in graph[now]:
-            heapq.heappush(q, (c, v))
+        for b, c in graph[now]:
+            heapq.heappush(q, (c, b))
 
     return res
 
 
 def kruskal():
+    data = ['7 9', '1 2 29', '1 5 75', '2 3 35', '2 6 34', '3 4 7', '4 6 23', '4 7 13', '5 6 53', '6 7 25']     # (v, e), (a, b, cost)
+
     def find_parent(x):
-        if parent[x] !=  x:
+        if parent[x] != x:
             parent[x] = find_parent(parent[x])
+
         return parent[x]
 
     def union(a, b):
         a = find_parent(a)
         b = find_parent(b)
 
-        if a < b: parent[b] = a
+        if a < b:
+            parent[b] = a
         else:
-             parent[a] = b
+            parent[a] = b
 
-    data = ['7 9', '1 2 29', '1 5 75', '2 3 35', '2 6 34', '3 4 7', '4 6 23', '4 7 13', '5 6 53', '6 7 25']     # (v, e), (a, b, cost)
+
+
 
     v, e = map(int, data[0].split())
     edges = []
@@ -272,15 +285,16 @@ def kruskal():
         a, b, c = map(int, d.split())
         edges.append((c, a, b))
 
-    parent = [i for i in range(v + 1)]
     edges.sort()
-    res = 0
 
+    parent = [i for i in range(v+1)]
+    res = 0
     for e in edges:
         c, a, b = e
+
         if find_parent(a) != find_parent(b):
-            union(a, b)
-            res += c
+           res += c
+           union(a, b)
 
     return res
 
@@ -294,16 +308,15 @@ print('=================================================')
 def topology_sort():
     data = ['7 8', '1 2', '1 5', '2 3', '2 6', '3 4', '4 7', '5 6', '6 4']      # 1. (v, e) / 2~. (a, b) : a -> b / 진입차수는 모두 1로 가정
 
+    q = deque()
     v, e = map(int, data[0].split())
-    graph = [[] for _ in range(v+1)]
     indeg = [0] * (v+1)
-
+    graph = [[] for _ in range(v+1)]
     for d in data[1:]:
         a, b = map(int, d.split())
-        graph[a].append(b)
         indeg[b] += 1
+        graph[a].append(b)
 
-    q = deque()
     for i in range(1, v+1):
         if indeg[i] == 0:
             q.append(i)
@@ -311,16 +324,14 @@ def topology_sort():
     res = []
     while q:
         now = q.popleft()
-        res.append(now)
 
+        res.append(now)
         for v in graph[now]:
             indeg[v] -= 1
             if indeg[v] == 0:
                 q.append(v)
 
     return res
-
-    return
 
 
 print('(:1253647)      Topology Sort >> ', topology_sort())
