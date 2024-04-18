@@ -253,7 +253,8 @@ def prim():
         res += cost
 
         for b, c in graph[now]:
-            heapq.heappush(q, (c, b))
+            if c not in visited:
+                heapq.heappush(q, (c, b))
 
     return res
 
