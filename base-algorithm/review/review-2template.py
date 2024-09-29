@@ -20,8 +20,9 @@
 import copy
 import heapq
 from collections import deque, defaultdict
-# Sort
 
+
+# Sort
 
 def bubble_sort(arr):
 
@@ -36,6 +37,7 @@ def selection_sort(arr):
 def insertion_sort(arr):
 
     return arr
+
 
 def quick_sort(arr):
 
