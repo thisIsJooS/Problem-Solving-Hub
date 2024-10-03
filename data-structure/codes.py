@@ -6,7 +6,9 @@
 5. Linked List
 6. Stack
 7. Queue
-8. 이진 트리의 순회
+8. 이진 트리의 순회 (preorder)
+9. 이진 트리의 순회 (levelorder)
+10. 이진 트리의 삽입
 
 """
 from collections import deque
@@ -428,6 +430,7 @@ class TreeNode:
         self.__data = data
         self.__left = None
         self.__right = None
+        self.__parent = None
 
     @property
     def data(self):
@@ -452,6 +455,14 @@ class TreeNode:
     @right.setter
     def right(self, right):
         self.__right = right
+
+    @property
+    def parent(self):
+        return self.__parent
+
+    @parent.setter
+    def parent(self, p):
+        self.__parent = p
 
 
 def preorder(cur):
@@ -494,9 +505,117 @@ def levelorder(cur):
             q.append(cur.right)
 
 
+#10. 이진 트리의 삽입
+"""
+Operation
+1. BST.insert(key)
+2. BST.search(target) -> node
+3. BST.delete(target)
+4. BST.min(node) -> node  : node 를 루트로 하는 이진 탐색 트리에서 가장 작은 key 를 가진 노드를 반환
+5. BST.max(node) -> node
+6. BST.prev(cur) -> node
+7. BST.next(cur) -> node
+"""
 
+class BST:
+    def __init__(self):
+        self.root = None
 
-print("==> 9. levelorder")
-print("levelorder 결과 (1 2 3 4 5 6 7) : ", end='')
-levelorder(n1)
+    def get_root(self):
+        return self.root
+
+    def preorder_traverse(self, cur, func):
+        if not cur:
+            return
+
+        func(cur)
+        self.preorder_traverse(cur.left, func)
+        self.preorder_traverse(cur.right, func)
+
+    def inorder_traverse(self, cur, func):
+        if not cur:
+            return
+
+        self.inorder_traverse(cur.left, func)
+        self.inorder_traverse(cur.right, func)
+
+    # 편의 함수
+    # cur 의 왼쪽 자식을 left 로 만든다.
+    def __make_left(self, cur, left):
+        cur.left = left
+        if left:
+            left.parent = cur
+
+    # 편의 함수
+    # cur 의 오른쪽 자식을 right 로 만든다.
+    def __make_right(self, cur, right):
+        cur.right = right
+        if right:
+            right.parent = cur
+
+    def insert(self, key):
+        new_node = TreeNode(key)
+
+        cur = self.root
+        if not cur:
+            self.root = new_node
+            return
+
+        while True:
+            parent = cur
+            if key < cur.key:
+                cur = cur.left
+                if not cur:
+                    self.__make_left(parent, new_node)
+                    return
+            else:
+                cur = cur.right
+                if not cur:
+                    self.__make_right(parent, new_node)
+                    return
+
+    def search(self, target):
+        cur = self.root
+        while cur:
+            if cur.key == target:
+                return cur
+            elif cur.key > target:
+                cur = cur.left
+            elif cur.key < target:
+                cur = cur.right
+
+        return cur
+
+    # 삭제하려는 노드가 리프노드인지, 자식이 하나만 있는 노드인지, 자식이 둘인지 나누어서 삭제해야함
+    def __delete_recursion(self, cur, target):
+        if not cur:
+            return None
+        elif target < cur.key:
+            new_left = self.__delete_recursion(cur.left, target)
+            self.__make_left(cur, new_left)
+        elif target > cur.key:
+            new_right = self.__delete_recursion(cur.right, target)
+            self.__make_right(cur, new_right)
+        else:
+            if not cur.left and not cur.right:
+                cur = None
+            elif not cur.right:
+                cur = cur.left
+            elif not cur.left:
+                cur = cur.right
+            else:
+                replace = cur.left
+                replace = self.max(replace)
+                cur.key, replace.key = replace.key, cur.key
+                new_left = self.__delete_recursion(cur.left, replace.key)
+                self.__make_left(cur, new_left)
+        return cur
+
+    def delete(self, target):
+        new_root = self.__delete_recursion(self.root, target)
+        self.root = new_root
+
+print("==> 10. 이진트리의 삽입")
 print()
+
+
