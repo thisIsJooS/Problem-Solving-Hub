@@ -8,7 +8,7 @@ arr.sort()
 """
 
 res = None
-val = 1e9
+val = 1e10
 
 for i in range(n-2):
     start = i+1
