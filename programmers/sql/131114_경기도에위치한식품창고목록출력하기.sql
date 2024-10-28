@@ -1,0 +1,8 @@
+-- 냉동시설 여부가 NULL인 경우, 'N'으로 출력
+-- 경기도 위치
+--  창고 ID를 기준으로 오름차순 정렬
+
+SELECT WAREHOUSE_ID, WAREHOUSE_NAME, ADDRESS, IFNULL(FREEZER_YN, 'N')
+FROM FOOD_WAREHOUSE
+WHERE ADDRESS LIKE '경기%'
+ORDER BY 1;
