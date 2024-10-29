@@ -1,0 +1,9 @@
+-- '경제' 카테고리에 속하는 도서
+-- 출판일을 기준으로 오름차순 정렬
+
+SELECT a.BOOK_ID, b.AUTHOR_NAME, DATE_FORMAT(a.PUBLISHED_DATE, '%Y-%m-%d') AS PUBLISHED_DATE
+FROM BOOK a
+INNER JOIN AUTHOR b
+ON a.AUTHOR_ID = b.AUTHOR_ID
+WHERE a.CATEGORY = '경제'
+ORDER BY 3;

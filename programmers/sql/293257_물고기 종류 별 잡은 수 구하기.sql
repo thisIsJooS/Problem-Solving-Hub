@@ -1,0 +1,9 @@
+-- 종류 별 물고기의 이름과 잡은 수를 출력
+-- 잡은 수 기준으로 내림차순 정렬
+
+SELECT count(*) AS FISH_COUNT, b.FISH_NAME AS FISH_NAME
+FROM FISH_INFO a
+INNER JOIN FISH_NAME_INFO b
+ON a.FISH_TYPE = b.FISH_TYPE
+GROUP BY b.FISH_NAME
+ORDER BY 1 DESC;

@@ -1,0 +1,11 @@
+--  Python이나 C# 스킬을 가진 개발자의 정보를 조회
+--  ID를 기준으로 오름차순 정렬
+-- 진수 변환 : CONV(수, 원래 진법, 변환할 진법)
+
+SELECT ID, EMAIL, FIRST_NAME, LAST_NAME
+FROM DEVELOPERS
+WHERE
+    SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'C#')
+    OR
+    SKILL_CODE & (SELECT CODE FROM SKILLCODES WHERE NAME = 'Python')
+ORDER BY 1
