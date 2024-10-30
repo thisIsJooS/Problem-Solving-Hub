@@ -1,0 +1,16 @@
+-- 자식이 없다면 자식의 수는 0으로 출력
+--  개체의 ID 에 대해 오름차순 정렬
+
+WITH TMP AS (
+    SELECT a.ID, count(a.ID) AS CHILD_COUNT
+    FROM ECOLI_DATA a
+    INNER JOIN ECOLI_DATA b
+    ON a.ID = b.PARENT_ID
+    GROUP BY a.ID
+)
+
+SELECT a.ID, IFNULL(b.CHILD_COUNT, 0) AS CHILD_COUNT
+FROM ECOLI_DATA a
+LEFT OUTER JOIN TMP b
+ON a.ID = b.ID
+ORDER BY 1;

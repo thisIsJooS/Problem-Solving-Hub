@@ -1,0 +1,10 @@
+-- 부서별 평균 연봉
+-- 평균연봉은 소수점 첫째 자리에서 반올림
+-- 부서별 평균 연봉을 기준으로 내림차순 정렬
+
+SELECT a.DEPT_ID, DEPT_NAME_EN, ROUND(AVG(SAL)) AS AVG_SAL
+FROM HR_DEPARTMENT a
+INNER JOIN HR_EMPLOYEES b
+ON a.DEPT_ID = b.DEPT_ID
+GROUP BY DEPT_ID
+ORDER BY 3 DESC
